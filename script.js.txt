@@ -1,4 +1,68 @@
-// Example backend server using Node.js and Express
+$(document).ready(function() {
+    $('#user-input').keypress(function(event) {
+        if (event.which === 13) {
+            sendMessage();
+        }
+    });
+});
+
+function sendMessage() {
+    var userInput = $('#user-input').val().trim();
+
+    if (userInput === '') {
+        return;
+    }
+
+    displayUserMessage(userInput);
+    $('#user-input').val('');
+
+    // Send user input to server for processing
+    sendToServer(userInput);
+}
+
+function displayUserMessage(message) {
+    var userMessageElement = $('<div class="chatbot-message user-message"></div>').text(message);
+    $('#chatbot-messages').append(userMessageElement);
+    scrollChatToBottom();
+}
+
+function displayBotMessage(message) {
+    var botMessageElement = $('<div class="chatbot-message bot-message"></div>').text(message);
+    $('#chatbot-messages').append(botMessageElement);
+    scrollChatToBottom();
+}
+
+function scrollChatToBottom() {
+    var chatbotMessages = document.getElementById('chatbot-messages');
+    chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+}
+
+function sendToServer(userInput) {
+    // Simulate server response (replace with actual server integration)
+    var botResponse = elizaRespond(userInput); // Replace with actual Eliza logic
+
+    // Simulate delay to simulate server processing time
+    setTimeout(function() {
+        displayBotMessage(botResponse);
+    }, 500); // Adjust timing as needed
+}
+
+// Example function to simulate Eliza's response
+function elizaRespond(userInput) {
+    // Replace with actual Eliza algorithm or responses
+    // For simplicity, a random response is generated here
+    var responses = [
+        "Tell me more about your feelings.",
+        "Why do you think you feel this way?",
+        "Can you elaborate on that?",
+        "How does that make you feel?",
+        // Add more responses to reach 1000
+    ];
+
+    var randomIndex = Math.floor(Math.random() * responses.length);
+    return responses[randomIndex];
+}
+
 
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -129,11 +193,40 @@ function elizaRespond(userInput) {
         "Why do you think you feel this way?",
         "Can you elaborate on that?",
         "How does that make you feel?",
+             "If there's nothing else, feel free to reach out again anytime.",
+     "I'm glad we could have this conversation. Take care!",
+     "Remember, I'm here whenever you need assistance.",     
+     "Just to confirm, you're asking about [restate user query]?",
+     "I want to make sure I understand correctly. Are you saying [rephrase user input]?",
+    "Could you clarify your question for me?",
+     "Thank you for sharing your thoughts.",
+     "I appreciate you opening up about this.",
+     "Your input is valuable to me.",
+     "I'm here to listen and offer support.",
+     "You're not alone in feeling this way.",
+     "Remember, it's okay to feel [emotion].",
+      "Have you considered trying [action or solution]?",
+      "Maybe [action] could help improve the situation.",
+      "It might be beneficial to [action] in this situation.",
+      "Here are some resources that might be helpful: [link].",
+      "You can find more information about [topic] on our website.",
+      "Would you like me to provide more details on [topic]?",
+      "I understand this must be difficult for you.",
+      "It's completely understandable to feel this way.",
+      "I hear you, and I'm here to support you.",
+      "Try focusing on the things that bring you joy.",
+      "Sometimes a change in perspective can make a difference.",
+      "What are some positive aspects of your situation?",
+     "Just to confirm, you're asking about [restate user query]?",
+     "I want to make sure I understand correctly. Are you saying [rephrase user input]?",
+    "Could you clarify your question for me?",
+     "If there's nothing else, feel free to reach out again anytime.",
+     "I'm glad we could have this conversation. Take care!",
+     "Remember, I'm here whenever you need assistance.",
         // Add more responses to reach 1000
     ];
 
     var randomIndex = Math.floor(Math.random() * responses.length);
     return responses[randomIndex];
 }
-
 
