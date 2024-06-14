@@ -1,0 +1,139 @@
+// Example backend server using Node.js and Express
+
+const express = require('express');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+
+const app = express();
+const port = 3000;
+
+app.use(cors());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+// Endpoint to handle user messages
+app.post('/message', (req, res) => {
+    const userInput = req.body.message;
+
+    // Process userInput (e.g., using ElizaRespond function)
+    const botResponse = elizaRespond(userInput);
+
+    // Simulate server processing delay
+    setTimeout(() => {
+        res.json({ message: botResponse });
+    }, 500); // Adjust timing as needed
+});
+
+app.listen(port, () => {
+    console.log(`Eliza chatbot server listening at http://localhost:${port}`);
+});
+function sendMessage() {
+    var userInput = $('#user-input').val().trim();
+
+    if (userInput === '') {
+        return;
+    }
+
+    displayUserMessage(userInput);
+    $('#user-input').val('');
+
+    // Send user input to server for processing
+    sendToServer(userInput, function(botResponse) {
+        displayBotMessage(botResponse);
+    });
+}
+
+function sendToServer(userInput, callback) {
+    $.post('http://localhost:3000/message', { message: userInput })
+        .done(function(data) {
+            callback(data.message);
+        })
+        .fail(function(error) {
+            console.error('Error sending message:', error);
+        });
+}
+function sendToServer(userInput) {
+    // Simulate server response locally
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            const botResponse = elizaRespond(userInput);
+            resolve(botResponse);
+        }, 500); // Simulate delay
+    });
+}
+
+async function sendMessage() {
+    var userInput = document.getElementById('user-input').value.trim();
+
+    if (userInput === '') {
+        return;
+    }
+
+    displayUserMessage(userInput);
+    document.getElementById('user-input').value = '';
+
+    try {
+        const botResponse = await sendToServer(userInput);
+        displayBotMessage(botResponse);
+    } catch (error) {
+        console.error('Error sending message:', error);
+    }
+}
+function sendMessage() {
+    var userInput = $('#user-input').val().trim();
+
+    if (userInput === '') {
+        return;
+    }
+
+    displayUserMessage(userInput);
+    $('#user-input').val('');
+
+    // Send user input to server for processing
+    sendToServer(userInput);
+}
+
+function displayUserMessage(message) {
+    var userMessageElement = $('<div class="chatbot-message user-message"></div>').text(message);
+    $('#chatbot-messages').append(userMessageElement);
+    scrollChatToBottom(); // Scroll to bottom after adding message
+}
+
+function displayBotMessage(message) {
+    var botMessageElement = $('<div class="chatbot-message bot-message"></div>').text(message);
+    $('#chatbot-messages').append(botMessageElement);
+    scrollChatToBottom(); // Scroll to bottom after adding message
+}
+
+function scrollChatToBottom() {
+    var chatbotMessages = document.getElementById('chatbot-messages');
+    chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+}
+
+function sendToServer(userInput) {
+    // Simulate server response (replace with actual server integration)
+    var botResponse = elizaRespond(userInput); // Replace with actual Eliza logic
+
+    // Simulate delay to simulate server processing time
+    setTimeout(function() {
+        displayBotMessage(botResponse);
+    }, 500); // Adjust timing as needed
+}
+
+// Example function to simulate Eliza's response
+function elizaRespond(userInput) {
+    // Replace with actual Eliza algorithm or responses
+    // For simplicity, a random response is generated here
+    var responses = [
+        "Tell me more about your feelings.",
+        "Why do you think you feel this way?",
+        "Can you elaborate on that?",
+        "How does that make you feel?",
+        // Add more responses to reach 1000
+    ];
+
+    var randomIndex = Math.floor(Math.random() * responses.length);
+    return responses[randomIndex];
+}
+
+
