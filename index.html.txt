@@ -3,18 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Advanced Eliza Chatbot</title>
+    <title>School Chatbot</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="chatbot-container">
         <div class="chatbot-header">
-            <h1>Advanced leo Chatbot</h1>
-        </div>
-        <div class="chatbot-chat">
+            <h1>Tidio 3.0 </h1>
+        </div>        <div class="chatbot-chat">
             <div class="chatbot-messages" id="chatbot-messages">
                 <div class="chatbot-message bot-message">
-                    Hello! How can I help you today?
+                    Hello! How can I assist you today?
                 </div>
             </div>
             <div class="chatbot-input">
@@ -24,7 +23,43 @@
         </div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Hidden Sections for Chatbot Responses -->
+    <div class="chatbot-response" id="facilities-response">
+        <h2>Facilities</h2>
+        <p>We offer state-of-the-art facilities including modern classrooms, a well-stocked library, and a sports complex.</p>
+    </div>
+
+    <div class="chatbot-response" id="faculty-response">
+        <h2>Our Faculty</h2>
+        <p>Meet our experienced faculty members who specialize in various fields such as Physics, Literature, and Computer Science.</p>
+    </div>
+
+    <div class="chatbot-response" id="goals-response">
+        <h2>Our Goals</h2>
+        <p>Our goals include achieving academic excellence and fostering research innovation.</p>
+    </div>
+
+    <div class="chatbot-response" id="experience-response">
+        <h2>Years of Experience</h2>
+        <p>Established in 19XX, we have decades of experience in providing quality education.</p>
+    </div>
+
+    <div class="chatbot-response" id="gallery-response">
+        <h2>School Images</h2>
+        <p>Explore our campus through these images.</p>
+        <div class="gallery">
+            <img src="image1.jpg" alt="School Image">
+            <img src="image2.jpg" alt="School Image">
+            <img src="image3.jpg" alt="School Image">
+        </div>
+    </div>
+
+    <div class="chatbot-response" id="admissions-response">
+        <h2>Admissions Information</h2>
+        <p>Apply now for the upcoming academic year!</p>
+        <p>For admission requirements and financial aid options, please visit our <a href="admissions-form.html">Admissions Page</a>.</p>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>
