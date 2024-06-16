@@ -1,232 +1,83 @@
-$(document).ready(function() {
-    $('#user-input').keypress(function(event) {
-        if (event.which === 13) {
-            sendMessage();
-        }
-    });
-});
+// Define responses for different categories
+const responses = {
+  "hello": `
+        <h2>hello</h2>
+        <p> I Tidio 3.0  how can i help you help you today, please use the corect speelings <p>
+         `,
+    "facilities": `
+        <h2>Facilities</h2>
+        <p>We offer state-of-the-art facilities including modern classrooms, a well-stocked library, and a sports complex.</p>
+    `,
+    "faculty": `
+        <h2>Our Faculty</h2>
+        <p>Meet our experienced faculty members who specialize in various fields such as Physics, Literature, and Computer Science.</p>
+    `,
+    "goals": `
+        <h2>Our Goals</h2>
+        <p>Our goals include achieving academic excellence and fostering research innovation.</p>
+    `,
+    "experience": `
+        <h2>Years of Experience</h2>
+        <p>Established in 19XX, we have decades of experience in providing quality education.</p>
+    `,
+    "images": `
+        <h2>School Images</h2>
+        <p>Explore our campus through these images.</p>
+        <div class="gallery">
+            <img src="image1.jpg" alt="School Image">
+            <img src="image2.jpg" alt="School Image">
+            <img src="image3.jpg" alt="School Image">
+        </div>
+    `,
+    "admissions": `
+        <h2>Admissions Information</h2>
+        <p>Apply now for the upcoming academic year!</p>
+        <p>For admission requirements and financial aid options, please visit our <a href="admissions-form.html">Admissions Page</a>.</p>
+    `,
+    "default": `
+        <p>I'm sorry, I don't understand. Please ask about facilities, faculty, goals, experience, images, or admissions.</p>
+    `
+};
 
+// Function to handle sending user message and receiving responses
 function sendMessage() {
-    var userInput = $('#user-input').val().trim();
+    var userInput = document.getElementById("user-input").value.trim().toLowerCase();
+    var chatbotMessages = document.getElementById("chatbot-messages");
 
-    if (userInput === '') {
-        return;
+    // User message
+    var userMessageElement = document.createElement("div");
+    userMessageElement.className = "chatbot-message user-message";
+    userMessageElement.textContent = userInput;
+    chatbotMessages.appendChild(userMessageElement);
+
+    // Bot response
+    var botResponseElement = document.createElement("div");
+    botResponseElement.className = "chatbot-message bot-message";
+
+    // Check if userInput matches any response category
+     if (userInput.includes("hello")) {
+        botResponseElement.innerHTML = responses["hello"];
+    }else if (userInput.includes("facility")) {
+        botResponseElement.innerHTML = responses["facilities"];
+    } else if (userInput.includes("faculty")) {
+        botResponseElement.innerHTML = responses["faculty"];
+    } else if (userInput.includes("goal")) {
+        botResponseElement.innerHTML = responses["goals"];
+    } else if (userInput.includes("experience")) {
+        botResponseElement.innerHTML = responses["experience"];
+    } else if (userInput.includes("image") || userInput.includes("photo")) {
+        botResponseElement.innerHTML = responses["images"];
+    } else if (userInput.includes("admission")) {
+        botResponseElement.innerHTML = responses["admissions"];
+    } else {
+        botResponseElement.innerHTML = responses["default"];
     }
+    
+    chatbotMessages.appendChild(botResponseElement);
 
-    displayUserMessage(userInput);
-    $('#user-input').val('');
-
-    // Send user input to server for processing
-    sendToServer(userInput);
-}
-
-function displayUserMessage(message) {
-    var userMessageElement = $('<div class="chatbot-message user-message"></div>').text(message);
-    $('#chatbot-messages').append(userMessageElement);
-    scrollChatToBottom();
-}
-
-function displayBotMessage(message) {
-    var botMessageElement = $('<div class="chatbot-message bot-message"></div>').text(message);
-    $('#chatbot-messages').append(botMessageElement);
-    scrollChatToBottom();
-}
-
-function scrollChatToBottom() {
-    var chatbotMessages = document.getElementById('chatbot-messages');
+    // Scroll to the bottom of chat
     chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+
+    // Clear user input field
+    document.getElementById("user-input").value = "";
 }
-
-function sendToServer(userInput) {
-    // Simulate server response (replace with actual server integration)
-    var botResponse = elizaRespond(userInput); // Replace with actual Eliza logic
-
-    // Simulate delay to simulate server processing time
-    setTimeout(function() {
-        displayBotMessage(botResponse);
-    }, 500); // Adjust timing as needed
-}
-
-// Example function to simulate Eliza's response
-function elizaRespond(userInput) {
-    // Replace with actual Eliza algorithm or responses
-    // For simplicity, a random response is generated here
-    var responses = [
-        "Tell me more about your feelings.",
-        "Why do you think you feel this way?",
-        "Can you elaborate on that?",
-        "How does that make you feel?",
-        // Add more responses to reach 1000
-    ];
-
-    var randomIndex = Math.floor(Math.random() * responses.length);
-    return responses[randomIndex];
-}
-
-
-const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-
-const app = express();
-const port = 3000;
-
-app.use(cors());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-
-// Endpoint to handle user messages
-app.post('/message', (req, res) => {
-    const userInput = req.body.message;
-
-    // Process userInput (e.g., using ElizaRespond function)
-    const botResponse = elizaRespond(userInput);
-
-    // Simulate server processing delay
-    setTimeout(() => {
-        res.json({ message: botResponse });
-    }, 500); // Adjust timing as needed
-});
-
-app.listen(port, () => {
-    console.log(`Eliza chatbot server listening at http://localhost:${port}`);
-});
-function sendMessage() {
-    var userInput = $('#user-input').val().trim();
-
-    if (userInput === '') {
-        return;
-    }
-
-    displayUserMessage(userInput);
-    $('#user-input').val('');
-
-    // Send user input to server for processing
-    sendToServer(userInput, function(botResponse) {
-        displayBotMessage(botResponse);
-    });
-}
-
-function sendToServer(userInput, callback) {
-    $.post('http://localhost:3000/message', { message: userInput })
-        .done(function(data) {
-            callback(data.message);
-        })
-        .fail(function(error) {
-            console.error('Error sending message:', error);
-        });
-}
-function sendToServer(userInput) {
-    // Simulate server response locally
-    return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            const botResponse = elizaRespond(userInput);
-            resolve(botResponse);
-        }, 500); // Simulate delay
-    });
-}
-
-async function sendMessage() {
-    var userInput = document.getElementById('user-input').value.trim();
-
-    if (userInput === '') {
-        return;
-    }
-
-    displayUserMessage(userInput);
-    document.getElementById('user-input').value = '';
-
-    try {
-        const botResponse = await sendToServer(userInput);
-        displayBotMessage(botResponse);
-    } catch (error) {
-        console.error('Error sending message:', error);
-    }
-}
-function sendMessage() {
-    var userInput = $('#user-input').val().trim();
-
-    if (userInput === '') {
-        return;
-    }
-
-    displayUserMessage(userInput);
-    $('#user-input').val('');
-
-    // Send user input to server for processing
-    sendToServer(userInput);
-}
-
-function displayUserMessage(message) {
-    var userMessageElement = $('<div class="chatbot-message user-message"></div>').text(message);
-    $('#chatbot-messages').append(userMessageElement);
-    scrollChatToBottom(); // Scroll to bottom after adding message
-}
-
-function displayBotMessage(message) {
-    var botMessageElement = $('<div class="chatbot-message bot-message"></div>').text(message);
-    $('#chatbot-messages').append(botMessageElement);
-    scrollChatToBottom(); // Scroll to bottom after adding message
-}
-
-function scrollChatToBottom() {
-    var chatbotMessages = document.getElementById('chatbot-messages');
-    chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
-}
-
-function sendToServer(userInput) {
-    // Simulate server response (replace with actual server integration)
-    var botResponse = elizaRespond(userInput); // Replace with actual Eliza logic
-
-    // Simulate delay to simulate server processing time
-    setTimeout(function() {
-        displayBotMessage(botResponse);
-    }, 500); // Adjust timing as needed
-}
-
-// Example function to simulate Eliza's response
-function elizaRespond(userInput) {
-    // Replace with actual Eliza algorithm or responses
-    // For simplicity, a random response is generated here
-    var responses = [
-        "Tell me more about your feelings.",
-        "Why do you think you feel this way?",
-        "Can you elaborate on that?",
-        "How does that make you feel?",
-             "If there's nothing else, feel free to reach out again anytime.",
-     "I'm glad we could have this conversation. Take care!",
-     "Remember, I'm here whenever you need assistance.",     
-     "Just to confirm, you're asking about [restate user query]?",
-     "I want to make sure I understand correctly. Are you saying [rephrase user input]?",
-    "Could you clarify your question for me?",
-     "Thank you for sharing your thoughts.",
-     "I appreciate you opening up about this.",
-     "Your input is valuable to me.",
-     "I'm here to listen and offer support.",
-     "You're not alone in feeling this way.",
-     "Remember, it's okay to feel [emotion].",
-      "Have you considered trying [action or solution]?",
-      "Maybe [action] could help improve the situation.",
-      "It might be beneficial to [action] in this situation.",
-      "Here are some resources that might be helpful: [link].",
-      "You can find more information about [topic] on our website.",
-      "Would you like me to provide more details on [topic]?",
-      "I understand this must be difficult for you.",
-      "It's completely understandable to feel this way.",
-      "I hear you, and I'm here to support you.",
-      "Try focusing on the things that bring you joy.",
-      "Sometimes a change in perspective can make a difference.",
-      "What are some positive aspects of your situation?",
-     "Just to confirm, you're asking about [restate user query]?",
-     "I want to make sure I understand correctly. Are you saying [rephrase user input]?",
-    "Could you clarify your question for me?",
-     "If there's nothing else, feel free to reach out again anytime.",
-     "I'm glad we could have this conversation. Take care!",
-     "Remember, I'm here whenever you need assistance.",
-        // Add more responses to reach 1000
-    ];
-
-    var randomIndex = Math.floor(Math.random() * responses.length);
-    return responses[randomIndex];
-}
-
